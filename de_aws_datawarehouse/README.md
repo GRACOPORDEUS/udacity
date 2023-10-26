@@ -17,7 +17,7 @@ This repository contains Python scripts for performing ETL (Extract, Transform, 
 
 ### 1. ETL Pipeline Preparation
 
-[etl_pipeline_preparation.py](etl_pipeline_preparation.py) is a Python script that prepares an ETL pipeline by setting up configurations and defining SQL queries. It includes the following key components:
+[sql_queries.py](sql_queries.py) is a Python script that prepares an ETL pipeline by setting up configurations and defining SQL queries. It includes the following key components:
 
 - Loading configurations from a `dwh.cfg` file.
 - Defining SQL queries for creating and dropping tables.
@@ -27,7 +27,7 @@ This repository contains Python scripts for performing ETL (Extract, Transform, 
 
 ### 2. SQL Table Creation and Deletion
 
-[create_and_drop_tables.py](create_and_drop_tables.py) is a Python script responsible for creating and dropping tables in a SQL database. It includes:
+[create_tables.py](create_tables.py) is a Python script responsible for creating and dropping tables in a SQL database. It includes:
 
 - SQL statements for creating tables for staging, analytics, and dimension data.
 - SQL statements for dropping existing tables if they already exist in the database.
@@ -35,7 +35,7 @@ This repository contains Python scripts for performing ETL (Extract, Transform, 
 
 ### 3. SQL Table Data Insertion
 
-[insert_data_into_tables.py](insert_data_into_tables.py) is a Python script that inserts data into SQL tables. It includes:
+[etl.py](etl.py) is a Python script that inserts data into SQL tables. It includes:
 
 - SQL statements for inserting data into tables for songplays, users, songs, artists, and time.
 - A main function that orchestrates the insertion process by connecting to the database, executing the SQL statements, and closing the connection.
@@ -48,9 +48,9 @@ To use these scripts, follow these steps:
 
 2. Execute the scripts in the following order:
 
-   - First, run `etl_pipeline_preparation.py` to prepare the ETL pipeline and define SQL queries.
-   - Then, run `create_and_drop_tables.py` to create and drop tables as needed.
-   - Finally, run `insert_data_into_tables.py` to insert data into the tables.
+   - First, run `etl.py` to prepare the ETL pipeline and define SQL queries.
+   - Then, run `create_tables.py` to create and drop tables as needed.
+   - Finally, run `sql_queries.py` to insert data into the tables.
 
 ## Prerequisites
 
