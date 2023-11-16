@@ -29,7 +29,7 @@ AccelerometerLanding_node1 = glueContext.create_dynamic_frame.from_options(
     connection_type="s3",
     format="json",
     connection_options={
-        "paths": ["s3://ggnp-udacity-bucket/starter/accelerometer/landing/"],
+        "paths": ["s3://ggnp-udacity-bucket/accelerometer/landing/"],
         "recurse": True,
     },
     transformation_ctx="AccelerometerLanding_node1",
@@ -41,7 +41,7 @@ CustomerTrusted_node1690252307671 = glueContext.create_dynamic_frame.from_option
     connection_type="s3",
     format="json",
     connection_options={
-        "paths": ["s3://ggnp-udacity-bucket/starter/customer/trusted/"],
+        "paths": ["s3://ggnp-udacity-bucket/customer/trusted/"],
         "recurse": True,
     },
     transformation_ctx="CustomerTrusted_node1690252307671",
@@ -100,7 +100,7 @@ AccelerometerTrusted_node3 = glueContext.write_dynamic_frame.from_options(
     connection_type="s3",
     format="json",
     connection_options={
-        "path": "s3://ggnp-udacity-bucket/starter/accelerometer/trusted/",
+        "path": "s3://ggnp-udacity-bucket/accelerometer/trusted/",
         "partitionKeys": [],
     },
     transformation_ctx="AccelerometerTrusted_node3",

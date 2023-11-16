@@ -19,7 +19,7 @@ CustomerLanding_node1 = glueContext.create_dynamic_frame.from_options(
     connection_type="s3",
     format="json",
     connection_options={
-        "paths": ["s3://ggnp-udacity-bucket/starter/customer/landing/"],
+        "paths": ["s3://ggnp-udacity-bucket/customer/landing/"],
         "recurse": True,
     },
     transformation_ctx="CustomerLanding_node1",
@@ -38,7 +38,7 @@ CustomerTrusted_node3 = glueContext.write_dynamic_frame.from_options(
     connection_type="s3",
     format="json",
     connection_options={
-        "path": "s3://ggnp-udacity-bucket/starter/customer/trusted/",
+        "path": "s3://ggnp-udacity-bucket/customer/trusted/",
         "partitionKeys": [],
     },
     transformation_ctx="CustomerTrusted_node3",
