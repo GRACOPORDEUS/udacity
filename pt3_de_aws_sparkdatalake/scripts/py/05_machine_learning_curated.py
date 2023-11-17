@@ -4,6 +4,7 @@ from awsglue.utils import getResolvedOptions
 from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.job import Job
+from awsglue.dynamicframe import DynamicFrame
 
 args = getResolvedOptions(sys.argv, ["JOB_NAME"])
 sc = SparkContext()
@@ -12,49 +13,49 @@ spark = glueContext.spark_session
 job = Job(glueContext)
 job.init(args["JOB_NAME"], args)
 
-# Script generated for node Step Trainer Trusted
-StepTrainerTrusted_node1 = glueContext.create_dynamic_frame.from_options(
-    format_options={"multiline": False},
+# Script generated for node AWS Glue Data Catalog
+AWSGlueDataCatalog_node1700191114522 = glueContext.create_dynamic_frame.from_catalog(
+    database="lakehouse",
+    table_name="step_trainer_trusted",
+    transformation_ctx="AWSGlueDataCatalog_node1700191114522",
+)
+
+# Script generated for node AWS Glue Data Catalog
+AWSGlueDataCatalog_node1700191128342 = glueContext.create_dynamic_frame.from_catalog(
+    database="lakehouse",
+    table_name="accelerometer_trusted",
+    transformation_ctx="AWSGlueDataCatalog_node1700191128342",
+)
+
+# Convert DynamicFrames to DataFrames
+df1 = AWSGlueDataCatalog_node1700191114522.toDF()
+df2 = AWSGlueDataCatalog_node1700191128342.toDF()
+
+# Register DataFrames as temporary views
+df1.createOrReplaceTempView("step_trainer_view")
+df2.createOrReplaceTempView("accelerometer_view")
+
+# Perform SQL Join
+result_df = spark.sql("""
+    SELECT *
+    FROM step_trainer_view
+    JOIN accelerometer_view
+    ON step_trainer_view.sensorreadingtime = accelerometer_view.timestamp
+""")
+
+# Convert the result DataFrame back to a DynamicFrame
+result_dynamic_frame = DynamicFrame.fromDF(result_df, glueContext, "result_dynamic_frame")
+
+# Script generated for node Amazon S3
+AmazonS3_node1700191218830 = glueContext.write_dynamic_frame.from_options(
+    frame=result_dynamic_frame,
     connection_type="s3",
     format="json",
     connection_options={
-        "paths": ["s3://ggnp-udacity-bucket/step_trainer/trusted/"],
-        "recurse": True,
+        "path": "s3://ggnp-udacity-bucket-2/machine_learning/curated/",
+        "partitionKeys": [],  # You need to provide the correct partition keys if applicable
     },
-    transformation_ctx="StepTrainerTrusted_node1",
-)
-
-# Script generated for node Accelerometer Trusted
-AccelerometerTrusted_node1690334760836 = glueContext.create_dynamic_frame.from_options(
-    format_options={"multiline": False},
-    connection_type="s3",
-    format="json",
-    connection_options={
-        "paths": ["s3://ggnp-udacity-bucket/accelerometer/trusted/"],
-        "recurse": True,
-    },
-    transformation_ctx="AccelerometerTrusted_node1690334760836",
-)
-
-# Script generated for node ML Join Data
-MLJoinData_node1690334781668 = Join.apply(
-    frame1=StepTrainerTrusted_node1,
-    frame2=AccelerometerTrusted_node1690334760836,
-    keys1=["sensorReadingTime"],
-    keys2=["timeStamp"],
-    transformation_ctx="MLJoinData_node1690334781668",
-)
-
-# Script generated for node ML Curated
-MLCurated_node3 = glueContext.write_dynamic_frame.from_options(
-    frame=MLJoinData_node1690334781668,
-    connection_type="s3",
-    format="json",
-    connection_options={
-        "path": "s3://ggnp-udacity-bucket/machine_learning/curated/",
-        "partitionKeys": [],
-    },
-    transformation_ctx="MLCurated_node3",
+    transformation_ctx="AmazonS3_node1700191218830",
 )
 
 job.commit()

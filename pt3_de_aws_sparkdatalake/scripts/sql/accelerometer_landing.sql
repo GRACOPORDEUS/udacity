@@ -1,4 +1,4 @@
-CREATE EXTERNAL TABLE IF NOT EXISTS `steadi`.`accelerometer_landing` (
+CREATE EXTERNAL TABLE IF NOT EXISTS `lakehouse`.`accelerometer_landing` (
   `user` string,
   `timestamp` bigint,
   `x` float,
@@ -13,5 +13,5 @@ WITH SERDEPROPERTIES (
   'mapping' = 'TRUE'
 )
 STORED AS INPUTFORMAT 'org.apache.hadoop.mapred.TextInputFormat' OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
-LOCATION 's3://ggnp-udacity-bucket/starter/accelerometer/landing/'
+LOCATION 's3://ggnp-udacity-bucket-2/accelerometer/landing/'
 TBLPROPERTIES ('classification' = 'json');

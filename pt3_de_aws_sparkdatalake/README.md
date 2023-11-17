@@ -165,3 +165,29 @@ aws iam put-role-policy --role-name my-glue-service-role --policy-name GlueAcces
 ```
 - Inspect the _permissions/policies_ of this role on **IAM dashboard**
 
+- If you get a file can't find error, update your policies:
+```
+aws iam put-role-policy --role-name my-glue-service-role --policy-name S3Access --policy-document '{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "ListObjectsInBucket",
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<your_s3_path>"
+            ]
+        },
+        {
+            "Sid": "AllObjectActions",
+            "Effect": "Allow",
+            "Action": "s3:*Object",
+            "Resource": [
+                "arn:aws:s3:::<your_s3_path>/*"
+            ]
+        }
+    ]
+}'
+```

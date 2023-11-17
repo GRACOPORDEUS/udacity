@@ -1,4 +1,4 @@
-CREATE EXTERNAL TABLE IF NOT EXISTS `steadi`.`customer_landing` (
+CREATE EXTERNAL TABLE IF NOT EXISTS `lakehouse`.`customer_landing` (
   `customername` string,
   `email` string,
   `phone` string,
@@ -17,5 +17,5 @@ WITH SERDEPROPERTIES (
   'mapping' = 'TRUE'
 )
 STORED AS INPUTFORMAT 'org.apache.hadoop.mapred.TextInputFormat' OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
-LOCATION 's3://ggnp-udacity-bucket/starter/customer/landing/'
+LOCATION 's3://ggnp-udacity-bucket-2/customer/landing/'
 TBLPROPERTIES ('classification' = 'json');

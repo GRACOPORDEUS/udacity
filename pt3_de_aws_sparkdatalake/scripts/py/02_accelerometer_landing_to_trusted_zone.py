@@ -29,7 +29,7 @@ AccelerometerLanding_node1 = glueContext.create_dynamic_frame.from_options(
     connection_type="s3",
     format="json",
     connection_options={
-        "paths": ["s3://ggnp-udacity-bucket/accelerometer/landing/"],
+        "paths": ["s3://ggnp-udacity-bucket-2/accelerometer/landing/"],
         "recurse": True,
     },
     transformation_ctx="AccelerometerLanding_node1",
@@ -41,7 +41,7 @@ CustomerTrusted_node1690252307671 = glueContext.create_dynamic_frame.from_option
     connection_type="s3",
     format="json",
     connection_options={
-        "paths": ["s3://ggnp-udacity-bucket/customer/trusted/"],
+        "paths": ["s3://ggnp-udacity-bucket-2/customer/trusted/"],
         "recurse": True,
     },
     transformation_ctx="CustomerTrusted_node1690252307671",
@@ -56,22 +56,9 @@ CustomerPrivacyFilter_node1690252648193 = Join.apply(
     transformation_ctx="CustomerPrivacyFilter_node1690252648193",
 )
 
-# Script generated for node Privacy Filter by Date
-SqlQuery0 = """
-SELECT * FROM accelerometer_landing_customer_trusted_data WHERE FROM_UNIXTIME(timeStamp / 1000e0) > FROM_UNIXTIME(shareWithResearchAsOfDate / 1000e0);
-"""
-PrivacyFilterbyDate_node1690252694629 = sparkSqlQuery(
-    glueContext,
-    query=SqlQuery0,
-    mapping={
-        "accelerometer_landing_customer_trusted_data": CustomerPrivacyFilter_node1690252648193
-    },
-    transformation_ctx="PrivacyFilterbyDate_node1690252694629",
-)
-
 # Script generated for node Drop Fields
 DropFields_node1690253124251 = DropFields.apply(
-    frame=PrivacyFilterbyDate_node1690252694629,
+    frame=CustomerPrivacyFilter_node1690252648193,
     paths=[
         "shareWithFriendsAsOfDate",
         "phone",
@@ -100,7 +87,7 @@ AccelerometerTrusted_node3 = glueContext.write_dynamic_frame.from_options(
     connection_type="s3",
     format="json",
     connection_options={
-        "path": "s3://ggnp-udacity-bucket/accelerometer/trusted/",
+        "path": "s3://ggnp-udacity-bucket-2/accelerometer/trusted/",
         "partitionKeys": [],
     },
     transformation_ctx="AccelerometerTrusted_node3",

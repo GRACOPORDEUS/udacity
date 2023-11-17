@@ -20,7 +20,7 @@ StepTrainerLanding_node1 = glueContext.create_dynamic_frame.from_options(
     connection_type="s3",
     format="json",
     connection_options={
-        "paths": ["s3://ggnp-udacity-bucket/starter/step_trainer/landing/"],
+        "paths": ["s3://ggnp-udacity-bucket-2/step_trainer/landing/"],
         "recurse": True,
     },
     transformation_ctx="StepTrainerLanding_node1",
@@ -32,7 +32,7 @@ CustomerCurated_node1690332858706 = glueContext.create_dynamic_frame.from_option
     connection_type="s3",
     format="json",
     connection_options={
-        "paths": ["s3://ggnp-udacity-bucket/customer/curated/"],
+        "paths": ["s3://ggnp-udacity-bucket-2/customer/curated/"],
         "recurse": True,
     },
     transformation_ctx="CustomerCurated_node1690332858706",
@@ -88,7 +88,7 @@ StepTrainerTrusted_node1690333127288 = glueContext.write_dynamic_frame.from_opti
     connection_type="s3",
     format="json",
     connection_options={
-        "path": "s3://ggnp-udacity-bucket/step_trainer/trusted/",
+        "path": "s3://ggnp-udacity-bucket-2/step_trainer/trusted/",
         "partitionKeys": [],
     },
     transformation_ctx="StepTrainerTrusted_node1690333127288",

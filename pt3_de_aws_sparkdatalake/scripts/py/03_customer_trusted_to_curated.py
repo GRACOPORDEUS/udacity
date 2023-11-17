@@ -20,7 +20,7 @@ CustomerTrusted_node1 = glueContext.create_dynamic_frame.from_options(
     connection_type="s3",
     format="json",
     connection_options={
-        "paths": ["s3://ggnp-udacity-bucket/customer/trusted/"],
+        "paths": ["s3://ggnp-udacity-bucket-2/customer/trusted/"],
         "recurse": True,
     },
     transformation_ctx="CustomerTrusted_node1",
@@ -32,7 +32,7 @@ AccelerometerTrusted_node1690329778730 = glueContext.create_dynamic_frame.from_o
     connection_type="s3",
     format="json",
     connection_options={
-        "paths": ["s3://ggnp-udacity-bucket/accelerometer/trusted/"],
+        "paths": ["s3://ggnp-udacity-bucket-2/accelerometer/trusted/"],
         "recurse": True,
     },
     transformation_ctx="AccelerometerTrusted_node1690329778730",
@@ -54,18 +54,18 @@ DropAccelerometerFields_node1690330031500 = DropFields.apply(
     transformation_ctx="DropAccelerometerFields_node1690330031500",
 )
 
-# Script generated for node Drop Duplicates
-DropDuplicates_node1690330176425 = DynamicFrame.fromDF(
-    DropAccelerometerFields_node1690330031500.toDF().dropDuplicates(),
-    glueContext,
-    "DropDuplicates_node1690330176425",
-)
-
 # Script generated for node Anonymization
 Anonymization_node1690330223484 = DropFields.apply(
-    frame=DropDuplicates_node1690330176425,
+    frame=DropAccelerometerFields_node1690330031500,
     paths=["email", "phone", "customerName", "birthDay"],
     transformation_ctx="Anonymization_node1690330223484",
+)
+
+# Script generated for node Drop Duplicates
+DropDuplicates_node1690330176425 = DynamicFrame.fromDF(
+    Anonymization_node1690330223484.toDF().dropDuplicates(),
+    glueContext,
+    "DropDuplicates_node1690330176425",
 )
 
 # Script generated for node Customer Curated
@@ -74,7 +74,7 @@ CustomerCurated_node3 = glueContext.write_dynamic_frame.from_options(
     connection_type="s3",
     format="json",
     connection_options={
-        "path": "s3://ggnp-udacity-bucket/customer/curated/",
+        "path": "s3://ggnp-udacity-bucket-2/customer/curated/",
         "partitionKeys": [],
     },
     transformation_ctx="CustomerCurated_node3",
