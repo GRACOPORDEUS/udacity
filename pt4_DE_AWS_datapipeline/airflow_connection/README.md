@@ -1,34 +1,34 @@
-#Step 1: Obtain AWS Credentials Connection URI
+# Step 1: Obtain AWS Credentials Connection URI
 ```bash
 airflow connections get aws_credentials -o json
 ```
 Copy the 'get_uri' value from the JSON output.
 
-#Step 2: Add AWS Credentials Connection
+# Step 2: Add AWS Credentials Connection
 ```bash
 airflow connections add aws_credentials --conn-uri 'aws://AKIA4QE4NTH3R7EBEANN:s73eJIJRbnqRtll0%2FYKxyVYgrDWXfoRpJCDkcG2m@'
 ```
-Replace the connection URI with the one copied in #Step 1.
+Replace the connection URI with the one copied in # Step 1.
 
-#Step 3: Obtain Redshift Connection URI
+# Step 3: Obtain Redshift Connection URI
 ```bash
 airflow connections get redshift -o json
 ```
 Copy the 'get_uri' value from the JSON output.
 
-#Step 4: Add Redshift Connection
+# Step 4: Add Redshift Connection
 ```bash
 airflow connections add redshift --conn-uri 'redshift://awsuser:R3dsh1ft@default.859321506295.us-east-1.redshift-serverless.amazonaws.com:5439/dev'
 ```
-Replace the connection URI with the one copied in #Step 3.
+Replace the connection URI with the one copied in # Step 3.
 
-#Step 5: Set S3 Bucket Variable
+# Step 5: Set S3 Bucket Variable
 ```bash
 airflow variables set s3_bucket sean-murdock
 ```
 Replace 'sean-murdock' with your actual S3 bucket name.
 
-#Step 6: Set S3 Prefix Variable
+# Step 6: Set S3 Prefix Variable
 ```bash
 airflow variables set s3_prefix data-pipelines
 ```
