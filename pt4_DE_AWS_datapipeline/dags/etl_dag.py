@@ -1,32 +1,40 @@
 from datetime import datetime, timedelta
-
 from airflow.operators.empty import EmptyOperator
 from operators import StageToRedshiftOperator, LoadFactOperator
 from operators import LoadDimensionOperator, DataQualityOperator
-
 from helpers import SqlQueries
-
 from airflow.models import Variable
-
 import logging
-
-
 from airflow.decorators import dag
 
 default_args = {
     'owner': 'Sparkify',
     'depends_on_past': False,
-    'start_date': datetime(2023, 7, 31),
+    'start_date': datetime(2023, 11, 20),
     'retries': 3,
     'retry_delay': timedelta(minutes=5),
     'catchup': False,
     'email_on_retry': False
 }
 
-
 @dag(default_args=default_args,
      schedule_interval='@hourly')
 def etl():
+    """
+    DAG to perform ETL (Extract, Transform, Load) operations for Sparkify's data.
+
+    Tasks:
+    - Begin_execution
+    - Stage_events
+    - Stage_songs
+    - Load_songplays_fact_table
+    - Load_song_dim_table
+    - Load_user_dim_table
+    - Load_artist_dim_table
+    - Load_time_dim_table
+    - Run_data_quality_checks
+    - End_execution
+    """
     # airflow variables
     s3_bucket = Variable.get('s3_bucket')
     log_data_prefix = Variable.get('s3_prefix_log_data')
@@ -38,16 +46,15 @@ def etl():
 
     stage_events_to_redshift = StageToRedshiftOperator(
         task_id='Stage_events',
-        # connection id for Redshift configured in Airflow 
         redshift_conn_id='redshift',
-        # connection id for IAM configured in Airflow 
         aws_credentials_id='aws_credentials',
         table='staging_events',
         s3_bucket=s3_bucket,
         s3_key=log_data_prefix,
         region=region,
         file_format='JSON',
-        s3_json_paths_format=log_json_path_prefix)
+        s3_json_paths_format=log_json_path_prefix
+    )
 
     stage_songs_to_redshift = StageToRedshiftOperator(
         task_id='Stage_songs',
@@ -57,7 +64,8 @@ def etl():
         s3_bucket=s3_bucket,
         s3_key=song_data_prefix,
         region=region,
-        file_format='JSON')
+        file_format='JSON'
+    )
     
     load_songplays_table = LoadFactOperator(
         task_id='Load_songplays_fact_table',
@@ -102,7 +110,6 @@ def etl():
     )
 
     end_execution = EmptyOperator(task_id='End_execution')
-
 
     begin_execution >> [stage_events_to_redshift, stage_songs_to_redshift] >>\
     load_songplays_table >>\
